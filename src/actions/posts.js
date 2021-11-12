@@ -1,24 +1,56 @@
 import * as api from "../api"
-import {FETCH_ALL, CREATE, DELETE, UPDATE} from "../constants/actionTypes"
+import {FETCH_POST,START_LOADING,END_LOADING,FETCH_BY_SEARCH,FETCH_ALL, CREATE, DELETE, UPDATE} from "../constants/actionTypes"
 
 //action creators 
-export const getPosts = () => async (dispatch) => {
+
+export const getPost = (id) => async (dispatch) => {
     try {
-      const { data } = await api.fetchPosts();
-  
-      dispatch({ type: FETCH_ALL, payload: data });
+        dispatch({type:START_LOADING})
+      const { data } = await api.fetchPost(id);
+      console.log(data);
+      dispatch({ type: FETCH_POST, payload: data });
+      dispatch({type:END_LOADING})
+
     } catch (error) {
       console.log(error);
     }
   };
 
-export const createPost = (post) => async (dispatch) => {
+
+export const getPosts = (page) => async (dispatch) => {
     try {
-        const { data } = await api.createPost(post)
-        dispatch({ type: CREATE, payload: data })
+        dispatch({type:START_LOADING})
+      const { data } = await api.fetchPosts(page);
+      console.log(data);
+      dispatch({ type: FETCH_ALL, payload: data });
+      dispatch({type:END_LOADING})
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const getPostBySearch = (searchQuery) => async (dispatch) => {
+    try {
+        dispatch({type:START_LOADING})
+        const {data: { data }} = await api.fetchPostBySearch(searchQuery)
+        dispatch({ type: FETCH_BY_SEARCH, payload: data });
+      dispatch({type:END_LOADING})
     } catch (error) {
         console.log(error);
-    }
+    } 
+}
+
+export const createPost = (post, history) => async (dispatch) => {
+    try {
+        dispatch({type:START_LOADING})
+        const { data } = await api.createPost(post)
+        history.push(`/posts/${data._id}`)
+        dispatch({ type: CREATE, payload: data })
+        dispatch({type:END_LOADING})
+    } catch (error) {
+        console.log(error);
+    } 
 }
 
 export const updatePost = (id, post) => async (dispatch) => {
