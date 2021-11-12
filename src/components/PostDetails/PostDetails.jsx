@@ -6,7 +6,7 @@ import {useParams, useHistory} from "react-router-dom"
 
 import useStyles from "./styles"
 import {getPost, getPostBySearch} from '../../actions/posts'
-
+import CommentSection from "./CommentsSection"
 const PostDetails = () => {
     const {post,posts, isLoading} = useSelector((state)=> state.posts)
     const dispatch = useDispatch()
@@ -46,10 +46,10 @@ const PostDetails = () => {
                     <Typography variant="h6">Created by: {post.name}</Typography>
                     <Typography variant="body1">{moment(post.createdAt).fromNow()}</Typography>
                     <Divider style={{ margin: '20px 0' }} />
-                    {/* <Typography variant="body1"><strong>Realtime Chat - coming soon!</strong></Typography>
+                    <Typography variant="body1"><strong>Realtime Chat - coming soon!</strong></Typography>
                     <Divider style={{ margin: '20px 0' }} />
-                    <Typography variant="body1"><strong>Comments - coming soon!</strong></Typography>
-                    <Divider style={{ margin: '20px 0' }} /> */}
+                    <CommentSection post = {post} />
+                    <Divider style={{ margin: '20px 0' }} />
                 </div>
                 <div className={classes.imageSection}>
                     <img className={classes.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} />
@@ -62,10 +62,10 @@ const PostDetails = () => {
                     <div className={classes.recommendedPosts}>
                         {recommendedPosts.map(({title, message, name, likes, selectedFile, _id}) => (
                             <div style = {{margin:"20px", cursor:"pointer"}} onClick = {() => openPost(_id) } key = {_id} >
-                                <Typography gutterBotton variant = "h6">{title}</Typography>
-                                <Typography gutterBotton variant = "subtitle2">{name}</Typography>
-                                <Typography gutterBotton variant = "subtitle2">{message}</Typography>
-                                <Typography gutterBotton variant = "subtitle1">Likes: {likes.length}</Typography>
+                                <Typography gutterBottom variant = "h6">{title}</Typography>
+                                <Typography gutterBottom variant = "subtitle2">{name}</Typography>
+                                <Typography gutterBottom variant = "subtitle2">{message}</Typography>
+                                <Typography gutterBottom variant = "subtitle1">Likes: {likes.length}</Typography>
                                 <img src={selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt="" width = "200px" />
                             </div>
                         ))}
